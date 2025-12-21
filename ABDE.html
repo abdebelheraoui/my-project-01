@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Motivation</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      padding: 1rem;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.12);
+      padding: 2.5rem 3rem;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+      max-width: 600px;
+      width: 100%;
+      backdrop-filter: blur(12px);
+      animation: fadeIn 1s ease-in-out;
+      position: relative;
+      z-index: 10;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .quote-box {
+      min-height: 180px;
+      margin-bottom: 1.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      transition: all 0.5s ease;
+    }
+
+    #quote {
+      font-size: 1.4rem;
+      line-height: 1.7;
+      animation: fadeIn 1s ease-in;
+      font-weight: 400;
+    }
+
+    .author {
+      margin-top: 1rem;
+      font-style: italic;
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+
+    .controls {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 0.9rem 1.8rem;
+      border: none;
+      border-radius: 25px;
+      background: #fff;
+      color: #764ba2;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    button:hover {
+      background: #764ba2;
+      color: #fff;
+      transform: translateY(-3px);
+      box-shadow: 0 7px 20px rgba(0,0,0,0.2);
+    }
+
+    button:active {
+      transform: translateY(-1px);
+    }
+
+    footer {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    .quote-counter {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Floating circles background effect */
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      animation: float 15s infinite ease-in-out;
+      z-index: 1;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+      50% { transform: translateY(-30px) rotate(180deg); opacity: 1; }
+      100% { transform: translateY(0) rotate(360deg); opacity: 0.7; }
+    }
+
+    /* Responsive design */
+    @media (max-width: 600px) {
+      .container {
+        padding: 2rem 1.5rem;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      #quote {
+        font-size: 1.2rem;
+      }
+      
+      .controls {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      button {
+        width: 100%;
+        max-width: 250px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Decorative floating circles -->
+  <div class="circle" style="width:80px; height:80px; top:10%; left:15%; animation-delay:0s;"></div>
+  <div class="circle" style="width:100px; height:100px; top:70%; left:70%; animation-delay:2s;"></div>
+  <div class="circle" style="width:60px; height:60px; top:40%; left:80%; animation-delay:4s;"></div>
+  <div class="circle" style="width:120px; height:120px; top:20%; left:75%; animation-delay:6s;"></div>
+  <div class="circle" style="width:70px; height:70px; top:60%; left:10%; animation-delay:8s;"></div>
+
+  <div class="container">
+    <h1>✨ Your Daily Motivation ✨</h1>
+    <div class="quote-box">
+      <div>
+        <p id="quote"></p>
+        <p id="author" class="author"></p>
+      </div>
+    </div>
+    <div class="controls">
+      <button id="newQuoteBtn">New Motivation</button>
+      <button id="shareBtn">Share Quote</button>
+    </div>
+    <p class="quote-counter" id="counter">Quote 1 of 200</p>
+    <footer>© 2025 DailyMotivator | "The only way to do great work is to love what you do." - Steve Jobs</footer>
+  </div>
+
+  <script>
+    const quotes = [
+      { text: "Believe in yourself and all that you are. Know that there is something inside you that is greater than any obstacle.", author: "Christian D. Larson" },
+      { text: "The harder you work for something, the greater you'll feel when you achieve it.", author: "Unknown" },
+      { text: "Don't watch the clock; do what it does. Keep going.", author: "Sam Levenson" },
+      { text: "Your only limit is your mind.", author: "Unknown" },
+      { text: "Great things never come from comfort zones.", author: "Neil Strauss" },
+      { text: "Dream it. Wish it. Do it.", author: "Unknown" },
+      { text: "Push yourself, because no one else is going to do it for you.", author: "Unknown" },
+      { text: "Every day is a new chance to become a better version of yourself.", author: "Unknown" },
+      { text: "Be so good they can't ignore you.", author: "Steve Martin" },
+      { text: "You didn't come this far just to come this far.", author: "Unknown" },
+      { text: "The future depends on what you do today.", author: "Mahatma Gandhi" },
+      { text: "It always seems impossible until it's done.", author: "Nelson Mandela" },
+      { text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill" },
+      { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+      { text: "Don't be pushed around by the fears in your mind. Be led by the dreams in your heart.", author: "Roy T. Bennett" },
+      { text: "You are never too old to set another goal or to dream a new dream.", author: "C.S. Lewis" },
+      { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
+      { text: "What you get by achieving your goals is not as important as what you become by achieving your goals.", author: "Zig Ziglar" },
+      { text: "The best time to plant a tree was 20 years ago. The second best time is now.", author: "Chinese Proverb" },
+      { text: "You miss 100% of the shots you don't take.", author: "Wayne Gretzky" },
+      { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+{ text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius" },
+{ text: "Everything you've ever wanted is on the other side of fear.", author: "George Addair" },
+{ text: "Opportunities don't happen. You create them.", author: "Chris Grosser" },
+{ text: "Don't let yesterday take up too much of today.", author: "Will Rogers" },
+{ text: "The way to get started is to quit talking and begin doing.", author: "Walt Disney" },
+{ text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
+{ text: "You are never too old to set another goal or to dream a new dream.", author: "C.S. Lewis" },
+{ text: "The only limit to our realization of tomorrow will be our doubts of today.", author: "Franklin D. Roosevelt" },
+{ text: "What you get by achieving your goals is not as important as what you become by achieving your goals.", author: "Zig Ziglar" },
+{ text: "The best time to plant a tree was 20 years ago. The second best time is now.", author: "Chinese Proverb" },
+{ text: "You miss 100% of the shots you don't take.", author: "Wayne Gretzky" },
+{ text: "I find that the harder I work, the more luck I seem to have.", author: "Thomas Jefferson" },
+{ text: "Don't be afraid to give up the good to go for the great.", author: "John D. Rockefeller" },
+{ text: "The only place where success comes before work is in the dictionary.", author: "Vidal Sassoon" },
+{ text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
+{ text: "The mind is everything. What you think you become.", author: "Buddha" },
+{ text: "The best revenge is massive success.", author: "Frank Sinatra" },
+{ text: "Either you run the day, or the day runs you.", author: "Jim Rohn" },
+{ text: "Life is 10% what happens to you and 90% how you react to it.", author: "Charles R. Swindoll" },
+{ text: "If you are not willing to risk the usual, you will have to settle for the ordinary.", author: "Jim Rohn" },
+{ text: "The only impossible journey is the one you never begin.", author: "Tony Robbins" },
+{ text: "The harder the conflict, the more glorious the triumph.", author: "Thomas Paine" },
+{ text: "Don't count the days, make the days count.", author: "Muhammad Ali" },
+{ text: "The man who moves a mountain begins by carrying away small stones.", author: "Confucius" },
+{ text: "Start where you are. Use what you have. Do what you can.", author: "Arthur Ashe" },
+{ text: "The difference between a successful person and others is not a lack of strength, not a lack of knowledge, but rather a lack in will.", author: "Vince Lombardi" },
+{ text: "The only person you are destined to become is the person you decide to be.", author: "Ralph Waldo Emerson" },
+{ text: "What lies behind us and what lies before us are tiny matters compared to what lies within us.", author: "Ralph Waldo Emerson" },
+{ text: "The two most important days in your life are the day you are born and the day you find out why.", author: "Mark Twain" },
+{ text: "Your time is limited, don't waste it living someone else's life.", author: "Steve Jobs" },
+{ text: "The journey of a thousand miles begins with one step.", author: "Lao Tzu" },
+{ text: "The only thing standing between you and your goal is the story you keep telling yourself as to why you can't achieve it.", author: "Jordan Belfort" },
+{ text: "The secret of change is to focus all of your energy not on fighting the old, but on building the new.", author: "Socrates" },
+{ text: "The greatest glory in living lies not in never falling, but in rising every time we fall.", author: "Nelson Mandela" },
+{ text: "The way to get started is to quit talking and begin doing.", author: "Walt Disney" },
+{ text: "If you look at what you have in life, you'll always have more. If you look at what you don't have in life, you'll never have enough.", author: "Oprah Winfrey" },
+{ text: "Your work is going to fill a large part of your life, and the only way to be truly satisfied is to do what you believe is great work.", author: "Steve Jobs" },
+{ text: "The only limit to our realization of tomorrow will be our doubts of today.", author: "Franklin D. Roosevelt" },
+{ text: "The best and most beautiful things in the world cannot be seen or even touched - they must be felt with the heart.", author: "Helen Keller" },
+{ text: "The only thing that stands between you and your dream is the will to try and the belief that it is possible.", author: "Joel Brown" },
+{ text: "Don't stop when you're tired. Stop when you're done.", author: "Unknown" },
+{ text: "Wake up with determination. Go to bed with satisfaction.", author: "Unknown" },
+{ text: "The key to success is to focus on goals, not obstacles.", author: "Unknown" },
+{ text: "Small progress is still progress. Keep going.", author: "Unknown" },
+{ text: "Your potential is endless. Go do what you were created to do.", author: "Unknown" },
+{ text: "The pain you feel today will be the strength you feel tomorrow.", author: "Unknown" },
+{ text: "Be the energy you want to attract.", author: "Unknown" },
+{ text: "Growth begins when we begin to accept our own weakness.", author: "Jean Vanier" },
+{ text: "The only bad workout is the one that didn't happen.", author: "Unknown" },
+{ text: "Your body can stand almost anything. It's your mind that you have to convince.", author: "Unknown" },
+{ text: "Strength doesn't come from what you can do. It comes from overcoming the things you once thought you couldn't.", author: "Rikki Rogers" },
+{ text: "The moment you're ready to quit is usually the moment right before a miracle happens.", author: "Unknown" },
+{ text: "Don't limit your challenges. Challenge your limits.", author: "Unknown" },
+{ text: "Success is what happens after you have survived all of your disappointments.", author: "Unknown" },
+{ text: "The distance between your dreams and reality is called action.", author: "Unknown" },
+{ text: "Make today so awesome that yesterday gets jealous.", author: "Unknown" },
+{ text: "Your vibe attracts your tribe.", author: "Unknown" },
+{ text: "The comeback is always stronger than the setback.", author: "Unknown" },
+{ text: "Don't tell people your plans. Show them your results.", author: "Unknown" },
+{ text: "The fire inside you is greater than the fire around you.", author: "Unknown" },
+{ text: "Your attitude determines your direction.", author: "Unknown" },
+{ text: "The only person you should try to be better than is the person you were yesterday.", author: "Unknown" },
+{ text: "Your speed doesn't matter. Forward is forward.", author: "Unknown" },
+{ text: "The universe rewards courage. Take the leap.", author: "Unknown" },
+{ text: "Your current situation is not your final destination.", author: "Unknown" },
+{ text: "The best view comes after the hardest climb.", author: "Unknown" },
+{ text: "Your story isn't over yet. Keep writing.", author: "Unknown" },
+{ text: "The energy you'll spend worrying about failure is greater than the energy needed to just do it.", author: "Unknown" },
+{ text: "Your breakthrough might be right around the corner. Don't give up now.", author: "Unknown" },
+{ text: "The world needs that special gift that only you have.", author: "Marie Forleo" },
+{ text: "Don't let the fear of losing be greater than the excitement of winning.", author: "Robert Kiyosaki" },
+{ text: "Your life does not get better by chance, it gets better by change.", author: "Jim Rohn" },
+{ text: "The biggest adventure you can take is to live the life of your dreams.", author: "Oprah Winfrey" },
+{ text: "Your time is too valuable to be wasting on people who don't appreciate you.", author: "Unknown" },
+{ text: "The only thing more contagious than a smile is a positive attitude.", author: "Unknown" },
+{ text: "Your passion is waiting for your courage to catch up.", author: "Isabelle Lafleche" },
+{ text: "The walls we build around us to keep out the sadness also keep out the joy.", author: "Jim Rohn" },
+{ text: "Your present circumstances don't determine where you can go; they merely determine where you start.", author: "Nido Qubein" },
+{ text: "The most effective way to do it, is to do it.", author: "Amelia Earhart" },
+{ text: "The only limits that exist are the ones you place on yourself.", author: "Unknown" },
+{ text: "Every accomplishment starts with the decision to try.", author: "John F. Kennedy" },
+{ text: "You are capable of more than you know. Trust yourself.", author: "Unknown" },
+{ text: "The secret of your future is hidden in your daily routine.", author: "Mike Murdock" },
+{ text: "Don't wait for opportunity. Create it.", author: "George Bernard Shaw" },
+{ text: "Your mind is a powerful thing. When you fill it with positive thoughts, your life will start to change.", author: "Unknown" },
+{ text: "The struggle you're in today is developing the strength you need for tomorrow.", author: "Unknown" },
+{ text: "Success is the sum of small efforts repeated day in and day out.", author: "Robert Collier" },
+{ text: "You don't have to be great to start, but you have to start to be great.", author: "Zig Ziglar" },
+{ text: "The only thing that overcomes hard luck is hard work.", author: "Harry Golden" },
+{ text: "Your life is your message to the world. Make it inspiring.", author: "Lorrin L. Lee" },
+{ text: "The difference between try and triumph is just a little umph!", author: "Marvin Phillips" },
+{ text: "You were born to win, but to be a winner you must plan to win, prepare to win, and expect to win.", author: "Zig Ziglar" },
+{ text: "The road to success is always under construction.", author: "Lily Tomlin" },
+{ text: "Your potential is like an ocean. Dive deep.", author: "Unknown" },
+{ text: "The moment you doubt whether you can fly, you cease forever to be able to do it.", author: "J.M. Barrie" },
+{ text: "Don't let what you cannot do interfere with what you can do.", author: "John Wooden" },
+{ text: "The best preparation for tomorrow is doing your best today.", author: "H. Jackson Brown Jr." },
+{ text: "You have within you right now, everything you need to deal with whatever the world can throw at you.", author: "Brian Tracy" },
+{ text: "The only disability in life is a bad attitude.", author: "Scott Hamilton" },
+{ text: "Your smile is your logo, your personality is your business card, how you leave others feeling after an experience with you becomes your trademark.", author: "Jay Danzie" },
+{ text: "The purpose of our lives is to be happy.", author: "Dalai Lama" },
+{ text: "Don't count the cost of going after your dreams. Count the cost of not going after them.", author: "Unknown" },
+{ text: "The world is changed by your example, not by your opinion.", author: "Paulo Coelho" },
+{ text: "You become what you believe.", author: "Oprah Winfrey" },
+{ text: "The greatest discovery of all time is that a person can change his future by merely changing his attitude.", author: "Oprah Winfrey" },
+{ text: "Don't be afraid to start over. It's a chance to build something better this time.", author: "Unknown" },
+{ text: "The quality of your life is the quality of your relationships.", author: "Tony Robbins" },
+{ text: "You can't go back and change the beginning, but you can start where you are and change the ending.", author: "C.S. Lewis" },
+{ text: "The only true wisdom is in knowing you know nothing.", author: "Socrates" },
+{ text: "Your vision will become clear only when you can look into your own heart.", author: "Carl Jung" },
+{ text: "The art of life is not controlling what happens to us, but using what happens to us.", author: "Gloria Steinem" },
+{ text: "Don't let the noise of others' opinions drown out your own inner voice.", author: "Steve Jobs" },
+{ text: "The biggest risk is not taking any risk.", author: "Mark Zuckerberg" },
+{ text: "You are never too small to make a difference.", author: "Greta Thunberg" },
+{ text: "The function of leadership is to produce more leaders, not more followers.", author: "Ralph Nader" },
+{ text: "Don't aim for success if you want it; just do what you love and believe in, and it will come naturally.", author: "David Frost" },
+{ text: "The most difficult thing is the decision to act, the rest is merely tenacity.", author: "Amelia Earhart" },
+{ text: "You can't use up creativity. The more you use, the more you have.", author: "Maya Angelou" },
+{ text: "The way to achieve your own success is to be willing to help somebody else get it first.", author: "Iyanla Vanzant" },
+{ text: "Your life isn't about finding yourself. Your life is about creating yourself.", author: "George Bernard Shaw" },
+{ text: "The only thing worse than being blind is having sight but no vision.", author: "Helen Keller" },
+{ text: "Don't let the fear of striking out keep you from playing the game.", author: "Babe Ruth" },
+{ text: "The successful warrior is the average man, with laser-like focus.", author: "Bruce Lee" },
+{ text: "You can have it all. Just not all at once.", author: "Oprah Winfrey" },
+{ text: "The best way to predict the future is to create it.", author: "Peter Drucker" },
+{ text: "Don't be pushed by your problems. Be led by your dreams.", author: "Ralph Waldo Emerson" },
+{ text: "The biggest adventure you can take is to live the life of your dreams.", author: "Oprah Winfrey" },
+{ text: "You must be the change you wish to see in the world.", author: "Mahatma Gandhi" },
+{ text: "The only real mistake is the one from which we learn nothing.", author: "Henry Ford" },
+{ text: "Don't let your learning lead to knowledge. Let your learning lead to action.", author: "Jim Rohn" },
+{ text: "The mind is not a vessel to be filled, but a fire to be kindled.", author: "Plutarch" },
+{ text: "You can't cross the sea merely by standing and staring at the water.", author: "Rabindranath Tagore" },
+{ text: "The future starts today, not tomorrow.", author: "Pope John Paul II" },
+{ text: "Don't wait for the perfect moment. Take the moment and make it perfect.", author: "Unknown" },
+{ text: "The purpose of life is to live it, to taste experience to the utmost, to reach out eagerly and without fear for newer and richer experience.", author: "Eleanor Roosevelt" },
+{ text: "You are the artist of your own life. Don't hand the paintbrush to anyone else.", author: "Unknown" },
+{ text: "The only thing that will stop you from fulfilling your dreams is you.", author: "Tom Bradley" },
+{ text: "Don't let the shadows of yesterday spoil the sunshine of tomorrow.", author: "Unknown" },
+{ text: "The greatest glory in living lies not in never falling, but in rising every time we fall.", author: "Nelson Mandela" },
+{ text: "You have power over your mind - not outside events. Realize this, and you will find strength.", author: "Marcus Aurelius" },
+{ text: "The best way to find yourself is to lose yourself in the service of others.", author: "Mahatma Gandhi" },
+{ text: "Don't let your past dictate who you are, but let it be part of who you will become.", author: "Unknown" },
+{ text: "The only way to have a friend is to be one.", author: "Ralph Waldo Emerson" },
+{ text: "You can't build a reputation on what you are going to do.", author: "Henry Ford" },
+{ text: "The greatest wealth is to live content with little.", author: "Plato" },
+{ text: "Don't let the sun go down without saying thank you to someone, and without admitting to yourself that absolutely no one gets this far alone.", author: "Stephen King" },
+{ text: "The purpose of our lives is to add value to the people of this generation and those that follow.", author: "Buckminster Fuller" },
+{ text: "You are always one decision away from a totally different life.", author: "Unknown" },
+{ text: "The only thing that stands between a person and what they want from life is often the will to try it and the faith to believe it's possible.", author: "Rich Devos" },
+{ text: "Don't let your fears stand in the way of your dreams.", author: "Unknown" },
+{ text: "The best and most beautiful things in the world cannot be seen or even touched - they must be felt with the heart.", author: "Helen Keller" },
+{ text: "You are never given a dream without also being given the power to make it true.", author: "Richard Bach" },
+{ text: "The only true failure is the failure to try.", author: "Unknown" },
+{ text: "Don't let the opinions of the average man sway you. Dream, and he thinks you're crazy.", author: "Steve Harvey" },
+{ text: "The biggest challenge in life is being yourself in a world that's trying to make you like everyone else.", author: "Unknown" },
+{ text: "You are enough just as you are.", author: "Meghan Markle" },
+{ text: "The only person you should try to be better than is the person you were yesterday.", author: "Unknown" },
+{ text: "Don't let the world change your smile. Let your smile change the world.", author: "Unknown" },
+{ text: "The most important thing is to enjoy your life - to be happy - it's all that matters.", author: "Audrey Hepburn" },
+{ text: "You are braver than you believe, stronger than you seem, and smarter than you think.", author: "A.A. Milne" },
+{ text: "The only way to achieve the impossible is to believe it is possible.", author: "Charles Kingsleigh" },
+{ text: "Don't let your history interfere with your destiny.", author: "Denis Waitley" },
+{ text: "The best revenge is to be unlike him who performed the injury.", author: "Marcus Aurelius" },
+{ text: "You are the CEO of your own life. Why are you working for someone else?", author: "Unknown" },
+{ text: "The only thing necessary for the triumph of evil is for good men to do nothing.", author: "Edmund Burke" },
+{ text: "Don't let your circumstances define you. You are defined by how you respond to your circumstances.", author: "Unknown" },
+{ text: "The greatest gift you can give someone is your time because when you give your time, you are giving a portion of your life that you will never get back.", author: "Unknown" },
+{ text: "You are today where your thoughts have brought you; you will be tomorrow where your thoughts take you.", author: "James Allen" },
+{ text: "The only real luxury is time. The older you get, the more you understand that.", author: "Tom Ford" },
+{ text: "Don't let the fear of the time it will take to accomplish something stand in the way of your doing it.", author: "Earl Nightingale" },
+{ text: "The best way to cheer yourself up is to try to cheer somebody else up.", author: "Mark Twain" },
+{ text: "You are never too old to set another goal or to dream a new dream.", author: "Les Brown" },
+{ text: "The only limit to our realization of tomorrow will be our doubts of today.", author: "Franklin D. Roosevelt" },
+{ text: "Don't let the noise of the world keep you from hearing the voice of God.", author: "Unknown" },
+{ text: "The greatest discovery of my generation is that a human being can alter his life by altering his attitudes.", author: "William James" },
+{ text: "You are the only one who can limit your greatness.", author: "Unknown" },
+{ text: "The only thing that is constant is change.", author: "Heraclitus" },
+{ text: "Don't let your special character and values, the secret that you know and no one else does, the truth - don't let that get swallowed up by the great chewing complacency.", author: "Aesop" },
+{ text: "The best way to find out if you can trust somebody is to trust them.", author: "Ernest Hemingway" },
+{ text: "You are the author of your own life story. Make it a bestseller.", author: "Unknown" }
+    ];
+
+    let currentIndex = 0;
+
+    function getDailyQuote() {
+      const today = new Date();
+      const index = today.getDate() % quotes.length;
+      currentIndex = index;
+      return quotes[index];
+    }
+
+    function getRandomQuote() {
+      const randomIndex = Math.floor(Math.random() * quotes.length);
+      currentIndex = randomIndex;
+      return quotes[randomIndex];
+    }
+
+    const quoteElement = document.getElementById("quote");
+    const authorElement = document.getElementById("author");
+    const counterElement = document.getElementById("counter");
+    const newQuoteBtn = document.getElementById("newQuoteBtn");
+    const shareBtn = document.getElementById("shareBtn");
+
+    function showQuote(quoteObj) {
+      quoteElement.innerText = quoteObj.text;
+      authorElement.innerText = `— ${quoteObj.author}`;
+      counterElement.innerText = `Quote ${currentIndex + 1} of ${quotes.length}`;
+      
+      // Add animation effect
+      document.querySelector('.quote-box').style.transform = 'scale(1.02)';
+      setTimeout(() => {
+        document.querySelector('.quote-box').style.transform = 'scale(1)';
+      }, 300);
+    }
+
+    function showDailyQuote() {
+      const dailyQuote = getDailyQuote();
+      showQuote(dailyQuote);
+    }
+
+    function showRandomQuote() {
+      const randomQuote = getRandomQuote();
+      showQuote(randomQuote);
+    }
+
+    function shareQuote() {
+      const currentQuote = quotes[currentIndex];
+      const textToShare = `"${currentQuote.text}" - ${currentQuote.author}`;
+      
+      if (navigator.share) {
+        navigator.share({
+          title: 'Daily Motivation',
+          text: textToShare,
+          url: window.location.href
+        })
+        .catch(err => {
+          console.log('Error sharing:', err);
+          fallbackShare(textToShare);
+        });
+      } else {
+        fallbackShare(textToShare);
+      }
+    }
+
+    function fallbackShare(text) {
+      // Copy to clipboard as fallback
+      navigator.clipboard.writeText(text)
+        .then(() => {
+          alert('Quote copied to clipboard!');
+        })
+        .catch(err => {
+          console.error('Failed to copy: ', err);
+          prompt('Copy this quote:', text);
+        });
+    }
+
+    // Event listeners
+    newQuoteBtn.addEventListener("click", showRandomQuote);
+    shareBtn.addEventListener("click", shareQuote);
+
+    // Show quote on load
+    window.addEventListener('load', showDailyQuote);
+  </script>
+</body>
+</html>
